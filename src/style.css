@@ -18,3 +18,14 @@ button:hover{
     flex-direction: column;
     border: 1px black solid;
 }
+
+.project-card__title{
+    position: relative;
+}
+
+.new-project-title{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}

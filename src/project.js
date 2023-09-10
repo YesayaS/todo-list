@@ -1,63 +1,120 @@
 class Project {
-  constructor() {
-    this.title = "New Project";
+  constructor(title = "New Project") {
+    this.title = title;
     this.taskList = [];
+  }
+
+  rename(title) {
+    this.title = title;
   }
 }
 
-const projectList = (() => {
-  let projects = [];
+class ProjectList {
+  constructor() {
+    this.projects = [];
+  }
 
-  const add = () => {
+  addProject() {
     const project = new Project();
-    projects.push(project);
-  };
+    this.projects.push(project);
+  }
 
-  const remove = () => {};
+  removeProject(project) {
+    const index = this.projects.indexOf(project);
+    if (index !== -1) {
+      this.projects.splice(index, 1);
+    }
+  }
 
-  const list = () => {
-    return projects;
-  };
-  return { add, remove, list };
-})();
+  renameProject(newName, projectIndex) {
+    this.projects[projectIndex].rename(newName);
+  }
 
-class ProjectCard {
-  create(projectTitle) {
-    const card = `
-    <div class="project-card">
-      <button class="project-card__title">${projectTitle}</button>
-      <div class="project-card__add-task">
-        <button class="add-task__button">+ Add Task</button>
-      </div>
-    </div>`;
+  getAllProjects() {
+    return this.projects;
+  }
+}
+
+class ProjectCardRenderer {
+  createProjectCard(projectTitle, i) {
+    const card = document.createElement("div");
+    card.className = "project-card";
+
+    const titleButton = document.createElement("input");
+    titleButton.className = "project-card__title";
+    titleButton.value = projectTitle;
+    titleButton.dataset.iProject = i;
+
+    const addTaskButton = document.createElement("button");
+    addTaskButton.className = "add-task__button";
+    addTaskButton.textContent = "+ Add Task";
+
+    const addTaskDiv = document.createElement("div");
+    addTaskDiv.className = "project-card__add-task";
+    addTaskDiv.appendChild(addTaskButton);
+
+    card.appendChild(titleButton);
+    card.appendChild(addTaskDiv);
+
     return card;
   }
 
   createAddProjectCard() {
-    const card = `
-    <div class="add-project-card">
-        <button class="add-project-card__button">+ Add Project</button>
-    </div>`;
+    const card = document.createElement("div");
+    card.className = "add-project-card";
+
+    const addButton = document.createElement("button");
+    addButton.className = "add-project-card__button";
+    addButton.textContent = "+ Add Project";
+
+    card.appendChild(addButton);
     return card;
   }
 }
 
-const renderProject = (mainContainer) => {
-  mainContainer.innerHTML = "";
+class EventHandler {}
 
-  projectList.list().forEach((project) => {
-    mainContainer.innerHTML += new ProjectCard().create(project.title);
-  });
+class ProjectApp {
+  constructor(mainContainer) {
+    this.mainContainer = mainContainer;
+    this.projectList = new ProjectList();
+    this.projectCardRenderer = new ProjectCardRenderer(this.projectList);
+  }
 
-  mainContainer.innerHTML += new ProjectCard().createAddProjectCard();
+  renderProjects() {
+    this.mainContainer.innerHTML = "";
 
-  mainContainer
-    .querySelector(".add-project-card__button")
-    .addEventListener("click", () => {
-      projectList.add();
-      renderProject(mainContainer);
+    this.projectList.getAllProjects().forEach((project, i) => {
+      const projectCard = this.projectCardRenderer.createProjectCard(
+        project.title,
+        i
+      );
+      this.mainContainer.appendChild(projectCard);
     });
-  return mainContainer;
-};
 
-export { renderProject };
+    const addProjectCard = this.projectCardRenderer.createAddProjectCard();
+
+    this.mainContainer.appendChild(addProjectCard);
+    this.buttonHandler();
+  }
+
+  buttonHandler() {
+    document
+      .querySelector(".add-project-card__button")
+      .addEventListener("click", () => {
+        this.projectList.addProject();
+        this.renderProjects();
+      });
+
+    document.querySelectorAll(".project-card__title").forEach((title) => {
+      title.addEventListener("change", (e) => {
+        this.projectList.renameProject(
+          e.target.value,
+          e.target.dataset.iProject
+        );
+      });
+    });
+  }
+}
+
+export { ProjectApp };
