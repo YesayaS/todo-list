@@ -19,11 +19,8 @@ class ProjectList {
     this.projects.push(project);
   }
 
-  removeProject(project) {
-    const index = this.projects.indexOf(project);
-    if (index !== -1) {
-      this.projects.splice(index, 1);
-    }
+  removeProject(projectIndex) {
+    this.projects.splice(projectIndex, 1);
   }
 
   renameProject(newName, projectIndex) {
@@ -42,11 +39,16 @@ class ProjectCardRenderer {
 
     const titleButton = document.createElement("input");
     titleButton.className = "project-card__title";
-    titleButton.value = projectTitle;
     titleButton.dataset.iProject = i;
+    titleButton.value = projectTitle;
+
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("project-card__delete-button");
+    deleteButton.dataset.iProject = i;
+    deleteButton.textContent = "Delete Project";
 
     const addTaskButton = document.createElement("button");
-    addTaskButton.className = "add-task__button";
+    addTaskButton.className = "task__add-button";
     addTaskButton.textContent = "+ Add Task";
 
     const addTaskDiv = document.createElement("div");
@@ -54,6 +56,7 @@ class ProjectCardRenderer {
     addTaskDiv.appendChild(addTaskButton);
 
     card.appendChild(titleButton);
+    card.appendChild(deleteButton);
     card.appendChild(addTaskDiv);
 
     return card;
@@ -71,8 +74,6 @@ class ProjectCardRenderer {
     return card;
   }
 }
-
-class EventHandler {}
 
 class ProjectApp {
   constructor(mainContainer) {
@@ -114,6 +115,15 @@ class ProjectApp {
         );
       });
     });
+
+    document
+      .querySelectorAll(".project-card__delete-button")
+      .forEach((button) => {
+        button.addEventListener("click", (e) => {
+          this.projectList.removeProject(e.target.dataset.iProject);
+          this.renderProjects();
+        });
+      });
   }
 }
 
