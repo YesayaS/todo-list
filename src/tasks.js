@@ -1,7 +1,9 @@
+import deleteIcon from "./assets/delete.png";
+
 class Task {
   constructor(
-    title = "task title",
-    description = "desc",
+    title = "Task Title",
+    description = "",
     dueDate = "due",
     isImportant = true
   ) {
@@ -19,7 +21,14 @@ class TaskCard {
     taskCard.dataset.taskIndex = i;
     taskCard.textContent = task.title;
 
+    const deleteTaskButton = document.createElement("button");
+    deleteTaskButton.classList.add("delete-task__button");
+    const deleteButtonIcon = document.createElement("img");
+    deleteButtonIcon.src = deleteIcon;
+    deleteTaskButton.appendChild(deleteButtonIcon);
+
     taskCardContainer.appendChild(taskCard);
+    taskCardContainer.appendChild(deleteTaskButton);
     return taskCard;
   }
 }

@@ -230,52 +230,64 @@ class ProjectApp {
         const taskEditorCard = document.createElement("form");
         taskEditorCard.setAttribute("id", "task-editor__form");
         taskEditorCard.setAttribute("name", "task-editor__form");
-        // taskEditorCard.textContent = "Edit Task";
-
-        const taskEditorHead = document.createElement("div");
-        taskEditorHead.classList.add("task-editor__head");
 
         const taskTitle = document.createElement("input");
+        taskTitle.classList.add("task-editor__title");
         taskTitle.value = task.title;
 
-        const deleteTaskButton = document.createElement("button");
-        deleteTaskButton.classList.add("delete-task__button");
-        deleteTaskButton.textContent = "Delete Task";
-
-        taskEditorHead.appendChild(taskTitle);
-        taskEditorHead.appendChild(deleteTaskButton);
-
-        const taskDescription = document.createElement("input");
+        const taskDescription = document.createElement("textarea");
+        taskDescription.placeholder = "Add more detail about the task.";
         taskDescription.value = task.description;
 
+        // other detail
+        const taskOtherDetail = document.createElement("div");
+        taskOtherDetail.classList.add("task-editor__other-detail");
+
+        const taskDueDateContainer = document.createElement("div");
+        taskDueDateContainer.classList.add("task-due__container");
+
+        const taskDueDateLabel = document.createElement("div");
+        taskDueDateLabel.textContent = "Due Date";
+
         const taskDueDate = document.createElement("input");
+        taskDueDate.type = "date";
         taskDueDate.value = task.dueDate;
 
+        taskDueDateContainer.appendChild(taskDueDateLabel);
+        taskDueDateContainer.appendChild(taskDueDate);
+
+        const isImportantContainer = document.createElement("div");
+        isImportantContainer.classList.add("is-important__container");
+
         const isImportant = document.createElement("input");
-        isImportant.value = task.isImportant;
+        isImportant.classList.add("is-important");
+        isImportant.type = "checkbox";
+        isImportant.checked = task.isImportant;
+
+        const isImportantLabel = document.createElement("label");
+        isImportantLabel.textContent = "Important";
+
+        isImportantContainer.appendChild(isImportant);
+        isImportantContainer.appendChild(isImportantLabel);
+
+        taskOtherDetail.appendChild(taskDueDateContainer);
+        taskOtherDetail.appendChild(isImportantContainer);
 
         const saveButton = document.createElement("button");
+        saveButton.classList.add("save-task__button");
         saveButton.textContent = "save";
         saveButton.setAttribute("form", "task-editor__form");
         saveButton.type = "submit";
 
-        taskEditorCard.appendChild(taskEditorHead);
+        taskEditorCard.appendChild(taskTitle);
         taskEditorCard.appendChild(taskDescription);
-        taskEditorCard.appendChild(taskDueDate);
-        taskEditorCard.appendChild(isImportant);
+        // taskEditorCard.appendChild(taskDueDate);
+        taskEditorCard.appendChild(taskOtherDetail);
         taskEditorCard.appendChild(saveButton);
 
         taskEditor.appendChild(taskEditorCard);
 
         document.body.insertAdjacentElement("afterbegin", taskEditor);
-
-        document.querySelectorAll(".delete-task__button").forEach((button) => {
-          button.addEventListener("click", (e) => {
-            this.projectList.deleteTask(projectIndex, taskIndex);
-            taskEditor.remove();
-            this.renderProjects();
-          });
-        });
 
         taskEditorCard.addEventListener("submit", (e) => {
           e.preventDefault;
@@ -283,12 +295,22 @@ class ProjectApp {
             taskTitle.value,
             taskDescription.value,
             taskDueDate.value,
-            isImportant.value
+            isImportant.checked
           );
           this.projectList.editTask(projectIndex, taskIndex, newTask);
           taskEditor.remove();
           this.renderProjects();
         });
+      });
+    });
+
+    document.querySelectorAll(".delete-task__button").forEach((button) => {
+      button.addEventListener("click", (e) => {
+        const projectIndex =
+          e.target.closest(".project-card").dataset.projectIndex;
+        const taskIndex = e.target.dataset.taskIndex;
+        this.projectList.deleteTask(projectIndex, taskIndex);
+        this.renderProjects();
       });
     });
 
