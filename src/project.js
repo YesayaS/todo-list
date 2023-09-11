@@ -216,11 +216,12 @@ class ProjectApp {
         });
       });
 
-    document.querySelectorAll(".task-card").forEach((button) => {
+    document.querySelectorAll(".task-card__button").forEach((button) => {
       button.addEventListener("click", (e) => {
         const projectIndex =
           e.target.closest(".project-card").dataset.projectIndex;
-        const taskIndex = e.target.dataset.taskIndex;
+        const taskIndex =
+          e.target.closest(".task-card__button").dataset.taskIndex;
 
         const task = this.projectList.getTask(projectIndex, taskIndex);
 

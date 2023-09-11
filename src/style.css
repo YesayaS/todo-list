@@ -66,6 +66,13 @@ button:active {
   gap: 15px;
 }
 
+.add-project-card__button{
+    border-radius: 10px;
+    padding: 20px;
+    background-color: var(--project-bg);
+    filter: brightness(0.9);
+}
+
 .project-card {
   display: flex;
   flex-direction: column;
@@ -99,6 +106,7 @@ button:active {
 .task-container {
   display: flex;
   flex-direction: column;
+  gap: 5px;
 }
 
 #task-editor {
@@ -171,4 +179,24 @@ button:active {
   padding: 5px;
   border-radius: 5px;
   background-color: var(--task-editor-bg);
+}
+
+.task-card{
+    display: flex;
+    border: 1px solid var(--outline);
+}
+
+.task-card button{
+    border: none;
+    background-color: var(--project-bg);
+
+}
+.task-card__button{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.task-card__due{
+    font-size: 0.8rem;
 }

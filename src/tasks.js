@@ -4,7 +4,7 @@ class Task {
   constructor(
     title = "Task Title",
     description = "",
-    dueDate = new Date(),
+    dueDate = "-",
     isImportant = true
   ) {
     this.title = title;
@@ -16,10 +16,25 @@ class Task {
 
 class TaskCard {
   create(taskCardContainer, task, i) {
-    const taskCard = document.createElement("button");
+    const taskCard = document.createElement("div");
     taskCard.classList.add("task-card");
-    taskCard.dataset.taskIndex = i;
-    taskCard.textContent = task.title;
+
+    const taskCardButton = document.createElement("button");
+    taskCardButton.classList.add("task-card__button");
+    taskCardButton.dataset.taskIndex = i;
+
+    const taskCardTitle = document.createElement("div");
+    taskCardTitle.classList.add("task-card__title");
+    taskCardTitle.textContent = task.title;
+
+    const taskCardDue = document.createElement("div");
+    taskCardDue.classList.add("task-card__due");
+    const dueDate = task.dueDate.toString().split("-");
+    const formatDueDate = `${dueDate[2]}-${dueDate[1]}-${dueDate[0]}`;
+    taskCardDue.textContent = formatDueDate;
+
+    taskCardButton.appendChild(taskCardTitle);
+    taskCardButton.appendChild(taskCardDue);
 
     const deleteTaskButton = document.createElement("button");
     deleteTaskButton.classList.add("delete-task__button");
@@ -27,9 +42,9 @@ class TaskCard {
     deleteButtonIcon.src = deleteIcon;
     deleteTaskButton.appendChild(deleteButtonIcon);
 
+    taskCard.appendChild(taskCardButton);
+    taskCard.appendChild(deleteTaskButton);
     taskCardContainer.appendChild(taskCard);
-    taskCardContainer.appendChild(deleteTaskButton);
-    return taskCard;
   }
 }
 
