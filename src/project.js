@@ -1,11 +1,21 @@
+import { TaskList, TaskManager } from "./tasks";
+
 class Project {
   constructor(title = "New Project") {
     this.title = title;
-    this.taskList = [];
+    this.taskList = new TaskList();
   }
 
   rename(title) {
     this.title = title;
+  }
+
+  addTask() {
+    this.taskList.add();
+  }
+
+  renderTaskCard() {
+    return this.taskList.renderCard();
   }
 }
 
@@ -19,7 +29,7 @@ class ProjectList {
     this.projects.push(project);
   }
 
-  removeProject(projectIndex) {
+  deleteProject(projectIndex) {
     this.projects.splice(projectIndex, 1);
   }
 
@@ -30,22 +40,31 @@ class ProjectList {
   getAllProjects() {
     return this.projects;
   }
+
+  addTask(index) {
+    this.projects[index].addTask();
+  }
+
+  getProjectTasks(projectIndex) {
+    return this.projects[projectIndex].getTaskList();
+  }
 }
 
 class ProjectCardRenderer {
-  createProjectCard(projectTitle, i) {
+  createProjectCard(project, i) {
     const card = document.createElement("div");
     card.className = "project-card";
+    card.dataset.cardIndex = i;
 
     const titleButton = document.createElement("input");
     titleButton.className = "project-card__title";
-    titleButton.dataset.iProject = i;
-    titleButton.value = projectTitle;
+    titleButton.value = project.title;
 
     const deleteButton = document.createElement("button");
     deleteButton.classList.add("project-card__delete-button");
-    deleteButton.dataset.iProject = i;
     deleteButton.textContent = "Delete Project";
+
+    const tasksList = project.renderTaskCard();
 
     const addTaskButton = document.createElement("button");
     addTaskButton.className = "task__add-button";
@@ -56,6 +75,7 @@ class ProjectCardRenderer {
     addTaskDiv.appendChild(addTaskButton);
 
     card.appendChild(titleButton);
+    card.appendChild(tasksList);
     card.appendChild(deleteButton);
     card.appendChild(addTaskDiv);
 
@@ -79,7 +99,11 @@ class ProjectApp {
   constructor(mainContainer) {
     this.mainContainer = mainContainer;
     this.projectList = new ProjectList();
-    this.projectCardRenderer = new ProjectCardRenderer(this.projectList);
+    this.projectCardRenderer = new ProjectCardRenderer();
+
+    // create template project
+    this.projectList.addProject();
+    this.renderProjects();
   }
 
   renderProjects() {
@@ -87,7 +111,7 @@ class ProjectApp {
 
     this.projectList.getAllProjects().forEach((project, i) => {
       const projectCard = this.projectCardRenderer.createProjectCard(
-        project.title,
+        project,
         i
       );
       this.mainContainer.appendChild(projectCard);
@@ -109,10 +133,9 @@ class ProjectApp {
 
     document.querySelectorAll(".project-card__title").forEach((title) => {
       title.addEventListener("change", (e) => {
-        this.projectList.renameProject(
-          e.target.value,
-          e.target.dataset.iProject
-        );
+        const value = e.target.value;
+        const index = e.target.closest(".project-card").dataset.cardIndex;
+        this.projectList.renameProject(value, index);
       });
     });
 
@@ -120,10 +143,19 @@ class ProjectApp {
       .querySelectorAll(".project-card__delete-button")
       .forEach((button) => {
         button.addEventListener("click", (e) => {
-          this.projectList.removeProject(e.target.dataset.iProject);
+          const index = e.target.closest(".project-card").dataset.cardIndex;
+          this.projectList.deleteProject(index);
           this.renderProjects();
         });
       });
+
+    document.querySelectorAll(".project-card__add-task").forEach((button) => {
+      button.addEventListener("click", (e) => {
+        const index = e.target.closest(".project-card").dataset.cardIndex;
+        this.projectList.addTask(index);
+        this.renderProjects();
+      });
+    });
   }
 }
 
