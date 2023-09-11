@@ -8,16 +8,23 @@ class Task {
 }
 
 class TaskCard {
-  create(title, dueDate, isImportant) {
-    const card = document.createElement("button");
-    card.classList.add("task-card");
-    card.textContent = title + " " + dueDate;
+  create(taskCardContainer, task, i) {
+    const taskCard = document.createElement("button");
+    taskCard.classList.add("task-card");
+    taskCard.dataset.taskIndex = i;
+    taskCard.textContent = task.title;
+    taskCardContainer.appendChild(taskCard);
+
+    return taskCard;
   }
 }
 
 class TaskList {
   constructor() {
     this.tasks = [];
+    this.taskCard = new TaskCard();
+
+    // create template task
     this.add();
   }
 
@@ -30,42 +37,23 @@ class TaskList {
     return this.tasks;
   }
 
-  renderCard() {
-    const taskCardContainer = document.createElement("div");
-    taskCardContainer.classList.add("task-container");
-
-    this.tasks.forEach((task) => {
-      const taskCard = document.createElement("button");
-      taskCard.classList.add("task-card");
-      taskCard.textContent = task.title;
-      taskCardContainer.appendChild(taskCard);
-    });
-    return taskCardContainer;
-  }
-}
-
-class TaskManager {
-  constructor() {
-    this.taskList = new TaskList();
-    this.taskCard = new TaskCard();
-
-    this.taskList.add();
+  getTask(index) {
+    return this.tasks[index];
   }
 
-  addTask() {}
+  edit(index, task) {
+    this.tasks[index] = task;
+  }
 
   renderCard() {
     const taskCardContainer = document.createElement("div");
     taskCardContainer.classList.add("task-container");
 
-    this.taskList.getAllTasks().forEach((task) => {
-      const taskCard = document.createElement("button");
-      taskCard.classList.add("task-card");
-      taskCard.textContent = task.title;
-      taskCardContainer.appendChild(taskCard);
+    this.tasks.forEach((task, i) => {
+      this.taskCard.create(taskCardContainer, task, i);
     });
     return taskCardContainer;
   }
 }
 
-export { TaskList, TaskManager };
+export { Task, TaskList };

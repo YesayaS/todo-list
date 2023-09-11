@@ -1,4 +1,4 @@
-import { TaskList, TaskManager } from "./tasks";
+import { Task, TaskList } from "./tasks";
 
 class Project {
   constructor(title = "New Project") {
@@ -6,12 +6,20 @@ class Project {
     this.taskList = new TaskList();
   }
 
-  rename(title) {
-    this.title = title;
+  rename(projectTitle) {
+    this.title = projectTitle;
   }
 
   addTask() {
     this.taskList.add();
+  }
+
+  getTask(taskIndex) {
+    return this.taskList.getTask(taskIndex);
+  }
+
+  editTask(taskIndex, task) {
+    this.taskList.edit(taskIndex, task);
   }
 
   renderTaskCard() {
@@ -41,8 +49,16 @@ class ProjectList {
     return this.projects;
   }
 
-  addTask(index) {
-    this.projects[index].addTask();
+  addTask(projectIndex) {
+    this.projects[projectIndex].addTask();
+  }
+
+  getTask(projectIndex, taskIndex) {
+    return this.projects[projectIndex].getTask(taskIndex);
+  }
+
+  editTask(projectIndex, taskIndex, task) {
+    this.projects[projectIndex].editTask(taskIndex, task);
   }
 
   getProjectTasks(projectIndex) {
@@ -54,7 +70,7 @@ class ProjectCardRenderer {
   createProjectCard(project, i) {
     const card = document.createElement("div");
     card.className = "project-card";
-    card.dataset.cardIndex = i;
+    card.dataset.projectIndex = i;
 
     const titleButton = document.createElement("input");
     titleButton.className = "project-card__title";
@@ -64,19 +80,19 @@ class ProjectCardRenderer {
     deleteButton.classList.add("project-card__delete-button");
     deleteButton.textContent = "Delete Project";
 
-    const tasksList = project.renderTaskCard();
-
     const addTaskButton = document.createElement("button");
     addTaskButton.className = "task__add-button";
     addTaskButton.textContent = "+ Add Task";
+
+    const tasksList = project.renderTaskCard();
 
     const addTaskDiv = document.createElement("div");
     addTaskDiv.className = "project-card__add-task";
     addTaskDiv.appendChild(addTaskButton);
 
     card.appendChild(titleButton);
-    card.appendChild(tasksList);
     card.appendChild(deleteButton);
+    card.appendChild(tasksList);
     card.appendChild(addTaskDiv);
 
     return card;
@@ -134,7 +150,7 @@ class ProjectApp {
     document.querySelectorAll(".project-card__title").forEach((title) => {
       title.addEventListener("change", (e) => {
         const value = e.target.value;
-        const index = e.target.closest(".project-card").dataset.cardIndex;
+        const index = e.target.closest(".project-card").dataset.projectIndex;
         this.projectList.renameProject(value, index);
       });
     });
@@ -143,15 +159,74 @@ class ProjectApp {
       .querySelectorAll(".project-card__delete-button")
       .forEach((button) => {
         button.addEventListener("click", (e) => {
-          const index = e.target.closest(".project-card").dataset.cardIndex;
+          const index = e.target.closest(".project-card").dataset.projectIndex;
           this.projectList.deleteProject(index);
           this.renderProjects();
         });
       });
 
+    document.querySelectorAll(".task-card").forEach((button) => {
+      button.addEventListener("click", (e) => {
+        const projectIndex =
+          e.target.closest(".project-card").dataset.projectIndex;
+        const taskIndex = e.target.dataset.taskIndex;
+
+        const task = this.projectList.getTask(projectIndex, taskIndex);
+
+        const taskEditor = document.createElement("div");
+        taskEditor.setAttribute("id", "task-editor");
+
+        const taskEditorCard = document.createElement("form");
+        taskEditorCard.setAttribute("id", "task-editor__form");
+        taskEditorCard.setAttribute("name", "task-editor__form");
+        taskEditorCard.textContent = "Edit Task";
+
+        // title, description, dueDate, isImportant
+        const taskTitle = document.createElement("input");
+        taskTitle.value = task.title;
+
+        const taskDescription = document.createElement("input");
+        taskDescription.value = task.description;
+
+        const taskDueDate = document.createElement("input");
+        taskDueDate.value = task.dueDate;
+
+        const isImportant = document.createElement("input");
+        isImportant.value = task.isImportant;
+
+        const saveButton = document.createElement("button");
+        saveButton.textContent = "save";
+        saveButton.setAttribute("form", "task-editor__form");
+        saveButton.type = "submit";
+
+        taskEditorCard.appendChild(taskTitle);
+        taskEditorCard.appendChild(taskDescription);
+        taskEditorCard.appendChild(taskDueDate);
+        taskEditorCard.appendChild(isImportant);
+        taskEditorCard.appendChild(saveButton);
+
+        taskEditor.appendChild(taskEditorCard);
+
+        document.body.insertAdjacentElement("afterbegin", taskEditor);
+
+        taskEditorCard.addEventListener("submit", (e) => {
+          e.preventDefault;
+          const newTask = new Task(
+            taskTitle.value,
+            taskDescription.value,
+            taskDueDate.value,
+            isImportant.value
+          );
+          this.projectList.editTask(projectIndex, taskIndex, newTask);
+          taskEditor.remove();
+          this.renderProjects();
+        });
+      });
+    });
+
     document.querySelectorAll(".project-card__add-task").forEach((button) => {
       button.addEventListener("click", (e) => {
-        const index = e.target.closest(".project-card").dataset.cardIndex;
+        const index = e.target.closest(".project-card").dataset.projectIndex;
         this.projectList.addTask(index);
         this.renderProjects();
       });
