@@ -4,7 +4,7 @@ class Task {
   constructor(
     title = "Task Title",
     description = "",
-    dueDate = "due",
+    dueDate = new Date(),
     isImportant = true
   ) {
     this.title = title;
