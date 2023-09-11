@@ -30,8 +30,8 @@ button:hover {
   filter: brightness(85%);
 }
 
-button:active{
-    scale: 0.98;
+button:active {
+  scale: 0.98;
 }
 
 .header-account,
@@ -114,7 +114,8 @@ button:active{
 #task-editor__form {
   height: fit-content;
   width: 40%;
-  margin-top: 5%;
+  min-width: 330px;
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -149,24 +150,24 @@ button:active{
   font-weight: 600;
 }
 
-.task-editor__other-detail{
-    display: flex;
-    justify-content: space-between;
+.task-editor__other-detail {
+  display: flex;
+  justify-content: space-between;
 }
 
-.is-important__container{
-    display: flex;
-    align-items: start;
-    gap: 5px;
+.is-important__container {
+  display: flex;
+  align-items: start;
+  gap: 5px;
 }
 
-.is-important{
-    width: 16px;
-    aspect-ratio: 1;
+.is-important {
+  width: 16px;
+  aspect-ratio: 1;
 }
 
-.save-task__button{
-    padding: 5px;
-    border-radius: 5px;
-    background-color: var(--task-editor-bg);
+.save-task__button {
+  padding: 5px;
+  border-radius: 5px;
+  background-color: var(--task-editor-bg);
 }
