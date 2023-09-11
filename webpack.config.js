@@ -22,6 +22,7 @@ module.exports = {
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        // include: path.resolve(__dirname, "src/assets"),
         type: "asset/resource",
       },
       {

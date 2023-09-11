@@ -19,12 +19,7 @@ class TaskCard {
     taskCard.dataset.taskIndex = i;
     taskCard.textContent = task.title;
 
-    const deleteTaskButton = document.createElement("button");
-    deleteTaskButton.classList.add("delete-task__button");
-    deleteTaskButton.textContent = "Delete Task";
-
     taskCardContainer.appendChild(taskCard);
-    taskCardContainer.appendChild(deleteTaskButton);
     return taskCard;
   }
 }

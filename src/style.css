@@ -1,50 +1,114 @@
-@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Rubik&display=swap");
 
-*{
-    font-family: 'Rubik', sans-serif;
-    margin: 0;
+* {
+  /* border: 0px red solid; */
+  font-family: "Rubik", sans-serif;
+  font-size: 1rem;
+  margin: 0;
 }
 
-button:hover{
-    cursor: pointer;
+:root {
+  --bg-body: #cbd5e1;
+  --bg-account: #f8fafc;
+  --outline-account: #0a0a0a;
+  --bg-project: #f8fafc;
+  --bg-task-editor: #f8fafc;
 }
 
-.main-container{
+body {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-body);
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.header-account,
+.project-card,
+.add-project-card__button, #task-editor__form {
+  border: 1px solid var(--outline-account);
+  box-shadow: 2px 2px;
+}
+
+.header {
+    width: fit-content;
     display: flex;
-    gap: 15px;
 }
 
-.project-card{
+.header-account {
+    width: fit-content;
     display: flex;
-    flex-direction: column;
-    border: 1px black solid;
+    align-items: center;
+    gap: 10px;
+    border-radius: 50px;
+  margin: 10px 20px;
+  padding: 10px 15px;
+
+  background-color: var(--bg-account);
 }
 
-.project-card__title{
-    position: relative;
+.main-container {
+  padding: 20px 40px;
+  display: flex;
+  gap: 15px;
 }
 
-.new-project-title{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+.project-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  padding: 20px;
+  border-radius: 10px;
+  background-color: var(--bg-project);
 }
 
-#task-editor{
-    z-index: 100;
-    height: 100%;
-    width: 100%;
+.project-card__header{
     display: flex;
-    position: fixed;
     justify-content: center;
-
-    backdrop-filter: brightness(75%);
+    gap: 10px;
 }
 
-#task-editor__form{
-    margin-top: 10%;
+.project-card__title {
+  border: none;
+  outline: none;
+  font-weight: 700;
+  border-bottom: 1px solid black;
+  background-color: var(--bg-project);
+}
+
+.project-card__delete-button{
+    background-color: var(--bg-project);
+    border: none;
+}
+
+.task-container{
     display: flex;
     flex-direction: column;
-    gap: 15px;
+}
+
+#task-editor {
+  z-index: 100;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  position: fixed;
+  justify-content: center;
+
+  backdrop-filter: brightness(60%);
+}
+
+#task-editor__form {
+    height: fit-content;
+  margin-top: 10%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 15px;
+
+  background-color: var(--bg-task-editor);
 }

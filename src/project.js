@@ -1,5 +1,5 @@
 import { Task, TaskList } from "./tasks";
-import { save, load, remove } from "./storage";
+import deleteIcon from "./assets/delete.png";
 
 class Project {
   constructor(title = "New Project", taskList = new TaskList()) {
@@ -116,13 +116,21 @@ class ProjectCardRenderer {
     card.className = "project-card";
     card.dataset.projectIndex = i;
 
-    const titleButton = document.createElement("input");
-    titleButton.className = "project-card__title";
-    titleButton.value = project.title;
+    const cardHeader = document.createElement("div");
+    cardHeader.classList.add("project-card__header");
+
+    const projectTitle = document.createElement("input");
+    projectTitle.className = "project-card__title";
+    projectTitle.value = project.title;
 
     const deleteButton = document.createElement("button");
     deleteButton.classList.add("project-card__delete-button");
-    deleteButton.textContent = "Delete Project";
+    const deleteButtonIcon = document.createElement("img");
+    deleteButtonIcon.src = deleteIcon;
+    deleteButton.appendChild(deleteButtonIcon);
+
+    cardHeader.appendChild(projectTitle);
+    cardHeader.appendChild(deleteButton);
 
     const addTaskButton = document.createElement("button");
     addTaskButton.className = "task__add-button";
@@ -134,8 +142,7 @@ class ProjectCardRenderer {
     addTaskDiv.className = "project-card__add-task";
     addTaskDiv.appendChild(addTaskButton);
 
-    card.appendChild(titleButton);
-    card.appendChild(deleteButton);
+    card.appendChild(cardHeader);
     card.appendChild(tasksList);
     card.appendChild(addTaskDiv);
 
@@ -223,11 +230,20 @@ class ProjectApp {
         const taskEditorCard = document.createElement("form");
         taskEditorCard.setAttribute("id", "task-editor__form");
         taskEditorCard.setAttribute("name", "task-editor__form");
-        taskEditorCard.textContent = "Edit Task";
+        // taskEditorCard.textContent = "Edit Task";
 
-        // title, description, dueDate, isImportant
+        const taskEditorHead = document.createElement("div");
+        taskEditorHead.classList.add("task-editor__head");
+
         const taskTitle = document.createElement("input");
         taskTitle.value = task.title;
+
+        const deleteTaskButton = document.createElement("button");
+        deleteTaskButton.classList.add("delete-task__button");
+        deleteTaskButton.textContent = "Delete Task";
+
+        taskEditorHead.appendChild(taskTitle);
+        taskEditorHead.appendChild(deleteTaskButton);
 
         const taskDescription = document.createElement("input");
         taskDescription.value = task.description;
@@ -243,7 +259,7 @@ class ProjectApp {
         saveButton.setAttribute("form", "task-editor__form");
         saveButton.type = "submit";
 
-        taskEditorCard.appendChild(taskTitle);
+        taskEditorCard.appendChild(taskEditorHead);
         taskEditorCard.appendChild(taskDescription);
         taskEditorCard.appendChild(taskDueDate);
         taskEditorCard.appendChild(isImportant);
@@ -252,6 +268,14 @@ class ProjectApp {
         taskEditor.appendChild(taskEditorCard);
 
         document.body.insertAdjacentElement("afterbegin", taskEditor);
+
+        document.querySelectorAll(".delete-task__button").forEach((button) => {
+          button.addEventListener("click", (e) => {
+            this.projectList.deleteTask(projectIndex, taskIndex);
+            taskEditor.remove();
+            this.renderProjects();
+          });
+        });
 
         taskEditorCard.addEventListener("submit", (e) => {
           e.preventDefault;
@@ -272,16 +296,6 @@ class ProjectApp {
       button.addEventListener("click", (e) => {
         const index = e.target.closest(".project-card").dataset.projectIndex;
         this.projectList.addTask(index);
-        this.renderProjects();
-      });
-    });
-
-    document.querySelectorAll(".delete-task__button").forEach((button) => {
-      button.addEventListener("click", (e) => {
-        const projectIndex =
-          e.target.closest(".project-card").dataset.projectIndex;
-        const taskIndex = e.target.dataset.taskIndex;
-        this.projectList.deleteTask(projectIndex, taskIndex);
         this.renderProjects();
       });
     });
