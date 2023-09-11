@@ -36,19 +36,33 @@ class ProjectList {
   constructor() {
     this.projects = [];
     if (localStorage.getItem("projects")) {
-      JSON.parse(localStorage.getItem("projects")).forEach((project, i) => {
-        this.projects.push(new Project(project.title));
-        console.log(this.projects);
-
-        console.log(JSON.parse(localStorage.getItem("projects"))[i].taskList);
+      console.log("hello1");
+      const projectList = JSON.parse(localStorage.getItem("projects"));
+      projectList.forEach((storageProject) => {
+        const project = new Project(storageProject.title);
+        storageProject.taskList.tasks.forEach((storageTask) => {
+          const task = [
+            storageTask.title,
+            storageTask.description,
+            storageTask.dueDate,
+            storageTask.isImportant,
+          ];
+          project.taskList.load(task);
+        });
+        this.projects.push(project);
       });
-    } else this.updateCache();
+    } else {
+      console.log("hello2");
+      this.updateCache();
+    }
   }
 
   addProject() {
     const project = new Project();
     this.projects.push(project);
     this.updateCache();
+    console.clear();
+    console.log(this.projects);
   }
 
   deleteProject(projectIndex) {
@@ -70,6 +84,7 @@ class ProjectList {
   addTask(projectIndex) {
     this.projects[projectIndex].addTask();
     this.updateCache();
+    console.log(this.projects);
   }
 
   deleteTask(projectIndex, taskIndex) {

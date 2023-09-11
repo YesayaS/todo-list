@@ -1,5 +1,10 @@
 class Task {
-  constructor(title, description, dueDate, isImportant) {
+  constructor(
+    title = "task title",
+    description = "desc",
+    dueDate = "due",
+    isImportant = true
+  ) {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
@@ -32,8 +37,15 @@ class TaskList {
     // this.add();
   }
 
-  add() {
-    const task = new Task("task title", "desc", "due", true);
+  add(taskDetail) {
+    const task = new Task(taskDetail);
+    this.tasks.push(task);
+  }
+
+  load(taskDetail) {
+    const [title, description, dueDate, isImportant] = taskDetail;
+    console.log(taskDetail);
+    const task = new Task(title, description, dueDate, isImportant);
     this.tasks.push(task);
   }
 
