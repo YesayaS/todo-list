@@ -70,6 +70,7 @@ button:active {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  height: fit-content;
 
   padding: 20px;
   border-radius: 10px;
