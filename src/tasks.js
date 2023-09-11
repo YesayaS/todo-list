@@ -13,8 +13,13 @@ class TaskCard {
     taskCard.classList.add("task-card");
     taskCard.dataset.taskIndex = i;
     taskCard.textContent = task.title;
-    taskCardContainer.appendChild(taskCard);
 
+    const deleteTaskButton = document.createElement("button");
+    deleteTaskButton.classList.add("delete-task__button");
+    deleteTaskButton.textContent = "Delete Task";
+
+    taskCardContainer.appendChild(taskCard);
+    taskCardContainer.appendChild(deleteTaskButton);
     return taskCard;
   }
 }
@@ -31,6 +36,10 @@ class TaskList {
   add() {
     const task = new Task("task title", "desc", "due", true);
     this.tasks.push(task);
+  }
+
+  delete(taskIndex) {
+    this.tasks.splice(taskIndex, 1);
   }
 
   getAllTasks() {

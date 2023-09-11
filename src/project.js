@@ -14,6 +14,10 @@ class Project {
     this.taskList.add();
   }
 
+  deleteTask(taskIndex) {
+    this.taskList.delete(taskIndex);
+  }
+
   getTask(taskIndex) {
     return this.taskList.getTask(taskIndex);
   }
@@ -51,6 +55,10 @@ class ProjectList {
 
   addTask(projectIndex) {
     this.projects[projectIndex].addTask();
+  }
+
+  deleteTask(projectIndex, taskIndex) {
+    this.projects[projectIndex].deleteTask(taskIndex);
   }
 
   getTask(projectIndex, taskIndex) {
@@ -228,6 +236,16 @@ class ProjectApp {
       button.addEventListener("click", (e) => {
         const index = e.target.closest(".project-card").dataset.projectIndex;
         this.projectList.addTask(index);
+        this.renderProjects();
+      });
+    });
+
+    document.querySelectorAll(".delete-task__button").forEach((button) => {
+      button.addEventListener("click", (e) => {
+        const projectIndex =
+          e.target.closest(".project-card").dataset.projectIndex;
+        const taskIndex = e.target.dataset.taskIndex;
+        this.projectList.deleteTask(projectIndex, taskIndex);
         this.renderProjects();
       });
     });
