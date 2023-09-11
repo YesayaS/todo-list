@@ -1,9 +1,10 @@
 import { Task, TaskList } from "./tasks";
+import { save, load, remove } from "./storage";
 
 class Project {
-  constructor(title = "New Project") {
+  constructor(title = "New Project", taskList = new TaskList()) {
     this.title = title;
-    this.taskList = new TaskList();
+    this.taskList = taskList;
   }
 
   rename(projectTitle) {
@@ -34,19 +35,32 @@ class Project {
 class ProjectList {
   constructor() {
     this.projects = [];
+    if (localStorage.getItem("projects")) {
+      JSON.parse(localStorage.getItem("projects")).forEach((project, i) => {
+        this.projects.push(new Project(project.title));
+        console.log(this.projects);
+
+        console.log(JSON.parse(localStorage.getItem("projects"))[i].taskList);
+      });
+    } else this.updateCache();
   }
 
   addProject() {
     const project = new Project();
     this.projects.push(project);
+    this.updateCache();
   }
 
   deleteProject(projectIndex) {
     this.projects.splice(projectIndex, 1);
+    this.updateCache();
   }
 
   renameProject(newName, projectIndex) {
     this.projects[projectIndex].rename(newName);
+    this.updateCache();
+    console.clear();
+    console.log(this.projects);
   }
 
   getAllProjects() {
@@ -55,10 +69,12 @@ class ProjectList {
 
   addTask(projectIndex) {
     this.projects[projectIndex].addTask();
+    this.updateCache();
   }
 
   deleteTask(projectIndex, taskIndex) {
     this.projects[projectIndex].deleteTask(taskIndex);
+    this.updateCache();
   }
 
   getTask(projectIndex, taskIndex) {
@@ -67,10 +83,15 @@ class ProjectList {
 
   editTask(projectIndex, taskIndex, task) {
     this.projects[projectIndex].editTask(taskIndex, task);
+    this.updateCache();
   }
 
   getProjectTasks(projectIndex) {
     return this.projects[projectIndex].getTaskList();
+  }
+
+  updateCache() {
+    localStorage.setItem("projects", JSON.stringify(this.projects));
   }
 }
 
@@ -126,8 +147,8 @@ class ProjectApp {
     this.projectCardRenderer = new ProjectCardRenderer();
 
     // create template project
-    this.projectList.addProject();
-    this.renderProjects();
+    // this.projectList.addProject();
+    // this.renderProjects();
   }
 
   renderProjects() {

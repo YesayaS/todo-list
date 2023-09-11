@@ -25,12 +25,11 @@ class TaskCard {
 }
 
 class TaskList {
-  constructor() {
-    this.tasks = [];
-    this.taskCard = new TaskCard();
+  constructor(tasks = []) {
+    this.tasks = tasks;
 
     // create template task
-    this.add();
+    // this.add();
   }
 
   add() {
@@ -59,7 +58,7 @@ class TaskList {
     taskCardContainer.classList.add("task-container");
 
     this.tasks.forEach((task, i) => {
-      this.taskCard.create(taskCardContainer, task, i);
+      new TaskCard().create(taskCardContainer, task, i);
     });
     return taskCardContainer;
   }

@@ -1,10 +1,8 @@
 import "./style.css";
 import { ProjectApp } from "./project";
+import { storage } from "./storage";
 
-// Usage
-// const mainContainer = document.getElementById("mainContainer");
-// const projectApp = new ProjectApp(mainContainer);
-// projectApp.renderProjects();
+// localStorage.clear();
 
 addEventListener("DOMContentLoaded", () => {
   const mainContainer = document.querySelector(".main-container");
