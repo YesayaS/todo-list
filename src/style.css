@@ -62,9 +62,11 @@ button:active {
 }
 
 .main-container {
+  height: 100%;
   padding: 20px 40px;
   display: flex;
   gap: 15px;
+  overflow-x: auto;
 }
 
 .add-project-card{
