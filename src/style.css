@@ -67,17 +67,18 @@ button:active {
   display: flex;
   gap: 15px;
   overflow-x: auto;
+  overflow-y: auto;
 }
 
-.add-project-card{
+.add-project-card {
   min-width: 145px;
 }
 
-.add-project-card__button{
-    border-radius: 10px;
-    padding: 20px;
-    background-color: var(--project-bg);
-    filter: brightness(0.9);
+.add-project-card__button {
+  border-radius: 10px;
+  padding: 20px;
+  background-color: var(--project-bg);
+  filter: brightness(0.9);
 }
 
 .project-card {
@@ -190,53 +191,53 @@ button:active {
   background-color: var(--task-editor-bg);
 }
 
-.task-card{
-    display: flex;
-    align-items: stretch;
-    border: 1px solid var(--outline);
+.task-card {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--outline);
 }
 
-.task-card button{
-    border: none;
-    background-color: var(--project-bg);
-
+.task-card button {
+  border: none;
+  background-color: var(--project-bg);
 }
-.task-card__button{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
+.task-card__button {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-.task-card__title{
+.task-card__title {
   font-weight: 500;
 }
 
-.task-card__due{
+.task-card__due {
   font-weight: 400;
-    font-size: 0.8rem;
+  font-size: 0.8rem;
 }
 
-.task-status--important{
+.task-status--important {
   background-color: var(--task-status--important);
   width: 5px;
 }
 
-.task-status--normal{
+.task-status--normal {
   background-color: var(--project-bg);
   width: 5px;
 }
 
-img{
+img {
   height: 20px;
   aspect-ratio: 1;
 }
 
-.delete-task__button, .project-card__delete-button{
+.delete-task__button,
+.project-card__delete-button {
   display: flex;
   align-items: center;
 }
 
-.task__add-button{
+.task__add-button {
   padding: 5px 10px;
   border: 1px solid var(--outline);
   background-color: var(--project-bg);
