@@ -1,10 +1,11 @@
 import deleteIcon from "./assets/delete.png";
+import { format } from "date-fns";
 
 class Task {
   constructor(
     title = "Task Title",
     description = "",
-    dueDate = "-",
+    dueDate = format(new Date(), "yyyy-MM-dd"),
     isImportant = true
   ) {
     this.title = title;
@@ -30,7 +31,7 @@ class TaskCard {
     const taskCardDue = document.createElement("div");
     taskCardDue.classList.add("task-card__due");
     const dueDate = task.dueDate.toString().split("-");
-    const formatDueDate = `${dueDate[2]}-${dueDate[1]}-${dueDate[0]}`;
+    const formatDueDate = `Due : ${dueDate[2]}-${dueDate[1]}-${dueDate[0]}`;
     taskCardDue.textContent = formatDueDate;
 
     taskCardButton.appendChild(taskCardTitle);
@@ -51,9 +52,6 @@ class TaskCard {
 class TaskList {
   constructor(tasks = []) {
     this.tasks = tasks;
-
-    // create template task
-    // this.add();
   }
 
   add(taskDetail) {
@@ -63,7 +61,6 @@ class TaskList {
 
   load(taskDetail) {
     const [title, description, dueDate, isImportant] = taskDetail;
-    console.log(taskDetail);
     const task = new Task(title, description, dueDate, isImportant);
     this.tasks.push(task);
   }

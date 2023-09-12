@@ -36,7 +36,6 @@ class ProjectList {
   constructor() {
     this.projects = [];
     if (localStorage.getItem("projects")) {
-      console.log("hello1");
       const projectList = JSON.parse(localStorage.getItem("projects"));
       projectList.forEach((storageProject) => {
         const project = new Project(storageProject.title);
@@ -52,7 +51,6 @@ class ProjectList {
         this.projects.push(project);
       });
     } else {
-      console.log("hello2");
       this.updateCache();
     }
   }
@@ -61,8 +59,6 @@ class ProjectList {
     const project = new Project();
     this.projects.push(project);
     this.updateCache();
-    console.clear();
-    console.log(this.projects);
   }
 
   deleteProject(projectIndex) {
@@ -73,8 +69,6 @@ class ProjectList {
   renameProject(newName, projectIndex) {
     this.projects[projectIndex].rename(newName);
     this.updateCache();
-    console.clear();
-    console.log(this.projects);
   }
 
   getAllProjects() {
@@ -84,7 +78,6 @@ class ProjectList {
   addTask(projectIndex) {
     this.projects[projectIndex].addTask();
     this.updateCache();
-    console.log(this.projects);
   }
 
   deleteTask(projectIndex, taskIndex) {
@@ -167,10 +160,6 @@ class ProjectApp {
     this.mainContainer = mainContainer;
     this.projectList = new ProjectList();
     this.projectCardRenderer = new ProjectCardRenderer();
-
-    // create template project
-    // this.projectList.addProject();
-    // this.renderProjects();
   }
 
   renderProjects() {
@@ -240,7 +229,6 @@ class ProjectApp {
         taskDescription.placeholder = "Add more detail about the task.";
         taskDescription.value = task.description;
 
-        // other detail
         const taskOtherDetail = document.createElement("div");
         taskOtherDetail.classList.add("task-editor__other-detail");
 
@@ -282,7 +270,6 @@ class ProjectApp {
 
         taskEditorCard.appendChild(taskTitle);
         taskEditorCard.appendChild(taskDescription);
-        // taskEditorCard.appendChild(taskDueDate);
         taskEditorCard.appendChild(taskOtherDetail);
         taskEditorCard.appendChild(saveButton);
 
@@ -292,6 +279,7 @@ class ProjectApp {
 
         taskEditorCard.addEventListener("submit", (e) => {
           e.preventDefault;
+          console.log(taskDueDate.value);
           const newTask = new Task(
             taskTitle.value,
             taskDescription.value,
