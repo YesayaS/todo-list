@@ -15,6 +15,7 @@
   --task-editor-bg: #f8fafc;
   --task-editor__input-boder: #d4d4d4;
   --input-bottomline: #0a0a0a;
+  --task-status--important: #dc2626;
 }
 
 body {
@@ -86,7 +87,7 @@ button:active {
 
 .project-card__header {
   display: flex;
-  justify-content: center;
+  align-content: center;
   gap: 10px;
 }
 
@@ -199,4 +200,19 @@ button:active {
 
 .task-card__due{
     font-size: 0.8rem;
+}
+
+.task-status--important{
+  background-color: var(--task-status--important);
+  width: 5px;
+}
+
+.task-status--normal{
+  background-color: var(--project-bg);
+  width: 5px;
+}
+
+img{
+  height: 20px;
+  aspect-ratio: 1;
 }

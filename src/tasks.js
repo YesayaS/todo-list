@@ -20,6 +20,12 @@ class TaskCard {
     const taskCard = document.createElement("div");
     taskCard.classList.add("task-card");
 
+    const taskIsImportant = document.createElement("div");
+    const isImportant = task.isImportant
+      ? "task-status--important"
+      : "task-status--normal";
+    taskIsImportant.classList.add(isImportant);
+
     const taskCardButton = document.createElement("button");
     taskCardButton.classList.add("task-card__button");
     taskCardButton.dataset.taskIndex = i;
@@ -43,6 +49,7 @@ class TaskCard {
     deleteButtonIcon.src = deleteIcon;
     deleteTaskButton.appendChild(deleteButtonIcon);
 
+    taskCard.appendChild(taskIsImportant);
     taskCard.appendChild(taskCardButton);
     taskCard.appendChild(deleteTaskButton);
     taskCardContainer.appendChild(taskCard);
