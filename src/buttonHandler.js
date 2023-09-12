@@ -166,7 +166,7 @@ class ButtonHandler {
   }
 
   addTask() {
-    document.querySelectorAll(".project-card__add-task").forEach((button) => {
+    document.querySelectorAll(".task__add-button").forEach((button) => {
       button.addEventListener("click", (e) => {
         const index = e.target.closest(".project-card").dataset.projectIndex;
         this.projectList.addTask(index);
